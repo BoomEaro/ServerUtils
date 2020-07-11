@@ -1,0 +1,11 @@
+name: ServerUtils
+main: ru.boomearo.serverutils.ServerUtils
+version: 0.2.2
+author: BoomEaro
+description: ServerUtils
+api-version: 1.13
+commands:
+  serverutils:
+    usage: /serverutils
+    aliases: [su]
+    description: server utils commands
