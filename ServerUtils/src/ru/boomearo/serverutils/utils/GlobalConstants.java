@@ -7,7 +7,7 @@ import ru.boomearo.serverutils.ServerUtils;
 public class GlobalConstants {
 
 	public static File getServerUtilsFolder() {
-		return ServerUtils.getContext().getDataFolder();
+		return ServerUtils.getInstance().getDataFolder();
 	}
 
 	public static File getPluginsFolder() {

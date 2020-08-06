@@ -1,6 +1,5 @@
 package ru.boomearo.serverutils.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.BlockCommandSender;
@@ -9,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerCommandEvent;
+
+import ru.boomearo.serverutils.ServerUtils;
 
 public class CommandBlockProtectListener implements Listener {
 
@@ -29,7 +30,7 @@ public class CommandBlockProtectListener implements Listener {
 			String[] args = msg.split(" ");
 			if (isProtectCommand(args[0])) {
 				loc.getBlock().setType(Material.AIR);
-				Bukkit.getLogger().info("(Debug) Попытка командного блока выполнить запрещенную команду: '" + e.getCommand() + "'. Координаты: X: " + x + " Y: " + y + " Z: " + z + ". Мир: " + loc.getWorld().getName() + " (Тип блока: " + cobl.getBlock().getType().toString() + ")");
+				ServerUtils.getInstance().getLogger().info("(Debug) Попытка командного блока выполнить запрещенную команду: '" + e.getCommand() + "'. Координаты: X: " + x + " Y: " + y + " Z: " + z + ". Мир: " + loc.getWorld().getName() + " (Тип блока: " + cobl.getBlock().getType().toString() + ")");
 				e.setCancelled(true);
 			}
 		}

@@ -29,7 +29,7 @@ public class ServerUtils extends JavaPlugin {
 	}
 	
 	private static ServerUtils instance = null;
-	public static ServerUtils getContext() { 
+	public static ServerUtils getInstance() { 
 		if (instance != null) return instance; return null; 
 	}
 	
