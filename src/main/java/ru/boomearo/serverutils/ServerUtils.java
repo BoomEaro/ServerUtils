@@ -9,7 +9,10 @@ import ru.boomearo.serverutils.utils.NetworkWatcher;
 public class ServerUtils extends JavaPlugin {
 
 	private final NetworkWatcher watcher = new NetworkWatcher();
-	
+
+	private static ServerUtils instance = null;
+
+	@Override
 	public void onEnable() {
 		instance = this;
 		
@@ -21,16 +24,16 @@ public class ServerUtils extends JavaPlugin {
 		
 	    getLogger().info("Плагин успешно включен");
 	}
-	
+
+	@Override
 	public void onDisable() {
 		this.watcher.unregister();
 		
 	    getLogger().info("Плагин успешно выключен");
 	}
-	
-	private static ServerUtils instance = null;
+
 	public static ServerUtils getInstance() { 
-		if (instance != null) return instance; return null; 
+		return instance;
 	}
 	
 }

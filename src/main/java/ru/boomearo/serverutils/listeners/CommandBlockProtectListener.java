@@ -35,7 +35,8 @@ public class CommandBlockProtectListener implements Listener {
 			}
 		}
 	}
-	
+
+	//TODO Сделать по нормальному
 	private boolean isProtectCommand(String cmd) {
 		String c = cmd.replace("/", "");
 		if (c.equalsIgnoreCase("sudo") ||
