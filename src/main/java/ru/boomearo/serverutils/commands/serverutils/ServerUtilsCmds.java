@@ -91,18 +91,23 @@ public class ServerUtilsCmds implements Commands {
         }
     }
 
-    private void unloadPlugin(CommandSender sender, String pluginname, boolean force) {
+    private void unloadPlugin(CommandSender sender, String pluginName, boolean force) {
         // find plugin
-        Plugin pmplugin = findPlugin(pluginname);
+        Plugin pmplugin = findPlugin(pluginName);
         // ignore if plugin is not loaded
         if (pmplugin == null) {
             sender.sendMessage("Plugin with this name not found");
             return;
         }
         // check if plugin has other active depending plugins
-        if (!force) {
-            List<String> depending = getOtherDependingPlugins(pmplugin);
-            if (!depending.isEmpty()) {
+        List<String> depending = getOtherDependingPlugins(pmplugin);
+        if (!depending.isEmpty()) {
+            if (force) {
+                for (String plugin : depending) {
+                    unloadPlugin(sender, plugin, true);
+                }
+            }
+            else {
                 sender.sendMessage("Found other plugins that depend on this one, disable them first: " + StringUtils.join(depending.toArray(new String[depending.size()]), ", "));
                 return;
             }
