@@ -1,4 +1,4 @@
-package ru.boomearo.serverutils.commands;
+package ru.boomearo.serverutils.commands.serverutils;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,19 +14,18 @@ import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-import ru.boomearo.serverutils.utils.FileUtils;
-import ru.boomearo.serverutils.utils.GlobalConstants;
-import ru.boomearo.serverutils.utils.InternalUtils;
-import ru.boomearo.serverutils.utils.StringUtils;
+import ru.boomearo.serverutils.utils.own.FileUtils;
+import ru.boomearo.serverutils.utils.own.GlobalConstants;
+import ru.boomearo.serverutils.utils.own.InternalUtils;
+import ru.boomearo.serverutils.utils.own.StringUtils;
 
-public class CmdServerUtils {
+public class ServerUtilsCmds {
 
     private final InternalUtils iutils = new InternalUtils();
 
-    @CmdInfo(name = "pmanager", description = "Менеджер плагинов. Разгрузить/загрузить указанный плагин.", usage = "/su pmanager load/unload/reload/funload/freload plugin", permission = "serverutils.use")
     public boolean pmanager(CommandSender cs, String[] args) {
         if (cs instanceof ConsoleCommandSender) {
-            if (args.length < 2 || args.length > 2) {
+            if (args.length != 2) {
                 return false;
             }
 
@@ -192,9 +191,9 @@ public class CmdServerUtils {
                     jarFile.close();
                     return jarpluginName;
                 }
-                jarFile.close();
             }
-            catch (IOException | InvalidDescriptionException e) {
+            catch (Exception ignored) {
+
             }
         }
         return null;

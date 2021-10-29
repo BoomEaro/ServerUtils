@@ -1,4 +1,4 @@
-package ru.boomearo.serverutils.commands;
+package ru.boomearo.serverutils.utils.other.commands;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -16,4 +16,6 @@ public @interface CmdInfo {
     String usage() default "";
 
     String permission() default "";
+
+    String[] aliases() default {""};
 }

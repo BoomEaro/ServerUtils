@@ -1,4 +1,4 @@
-package ru.boomearo.serverutils.utils;
+package ru.boomearo.serverutils.utils.own;
 
 import java.io.File;
 import java.io.IOException;
