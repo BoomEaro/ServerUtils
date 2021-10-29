@@ -6,12 +6,12 @@ import ru.boomearo.serverutils.ServerUtils;
 
 public class GlobalConstants {
 
-	public static File getServerUtilsFolder() {
-		return ServerUtils.getInstance().getDataFolder();
-	}
+    public static File getServerUtilsFolder() {
+        return ServerUtils.getInstance().getDataFolder();
+    }
 
-	public static File getPluginsFolder() {
-		return getServerUtilsFolder().getParentFile();
-	}
+    public static File getPluginsFolder() {
+        return getServerUtilsFolder().getParentFile();
+    }
 
 }

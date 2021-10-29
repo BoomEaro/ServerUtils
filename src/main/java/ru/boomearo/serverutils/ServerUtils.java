@@ -8,32 +8,32 @@ import ru.boomearo.serverutils.utils.NetworkWatcher;
 
 public class ServerUtils extends JavaPlugin {
 
-	private final NetworkWatcher watcher = new NetworkWatcher();
+    private final NetworkWatcher watcher = new NetworkWatcher();
 
-	private static ServerUtils instance = null;
+    private static ServerUtils instance = null;
 
-	@Override
-	public void onEnable() {
-		instance = this;
-		
-		this.watcher.register();
-		
-	    getServer().getPluginManager().registerEvents(new CommandBlockProtectListener(), this);
-		
-	    getCommand("serverutils").setExecutor(new CmdExecutor());
-		
-	    getLogger().info("Плагин успешно включен");
-	}
+    @Override
+    public void onEnable() {
+        instance = this;
 
-	@Override
-	public void onDisable() {
-		this.watcher.unregister();
-		
-	    getLogger().info("Плагин успешно выключен");
-	}
+        this.watcher.register();
 
-	public static ServerUtils getInstance() { 
-		return instance;
-	}
-	
+        getServer().getPluginManager().registerEvents(new CommandBlockProtectListener(), this);
+
+        getCommand("serverutils").setExecutor(new CmdExecutor());
+
+        getLogger().info("Плагин успешно включен");
+    }
+
+    @Override
+    public void onDisable() {
+        this.watcher.unregister();
+
+        getLogger().info("Плагин успешно выключен");
+    }
+
+    public static ServerUtils getInstance() {
+        return instance;
+    }
+
 }

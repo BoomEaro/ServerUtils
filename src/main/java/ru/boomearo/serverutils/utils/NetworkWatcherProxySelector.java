@@ -15,59 +15,60 @@ import ru.boomearo.serverutils.ServerUtils;
 
 public class NetworkWatcherProxySelector extends ProxySelector {
 
-	private final ProxySelector defaultSelector;
+    private final ProxySelector defaultSelector;
 
-	public ProxySelector getDefaultSelector() {
-		return this.defaultSelector;
-	}
+    public ProxySelector getDefaultSelector() {
+        return this.defaultSelector;
+    }
 
-	public NetworkWatcherProxySelector(ProxySelector defaultSelector) {
-		this.defaultSelector = defaultSelector;
-	}
+    public NetworkWatcherProxySelector(ProxySelector defaultSelector) {
+        this.defaultSelector = defaultSelector;
+    }
 
-	@Override
-	public List<Proxy> select(URI uri) {
-		if (Bukkit.isPrimaryThread()) {
-			Plugin plugin = getRequestingPlugin();
-			if (plugin != null) {
-				ServerUtils.getInstance().getLogger().warning("Plugin " + plugin.getName() + " attempted to establish connection " + uri + " in main server thread");
-			} 
-			else {
-				ServerUtils.getInstance().getLogger().warning("Something attempted to access " + uri + " in main server thread, printing stack trace");
-				Thread.dumpStack();
-			}
-		}
-		return this.defaultSelector.select(uri);
-	}
+    @Override
+    public List<Proxy> select(URI uri) {
+        if (Bukkit.isPrimaryThread()) {
+            Plugin plugin = getRequestingPlugin();
+            if (plugin != null) {
+                ServerUtils.getInstance().getLogger().warning("Plugin " + plugin.getName() + " attempted to establish connection " + uri + " in main server thread");
+            }
+            else {
+                ServerUtils.getInstance().getLogger().warning("Something attempted to access " + uri + " in main server thread, printing stack trace");
+                Thread.dumpStack();
+            }
+        }
+        return this.defaultSelector.select(uri);
+    }
 
-	@Override
-	public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
-		this.defaultSelector.connectFailed(uri, sa, ioe);
-	}
+    @Override
+    public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
+        this.defaultSelector.connectFailed(uri, sa, ioe);
+    }
 
-	private Plugin getRequestingPlugin() {
-		HashMap<ClassLoader, Plugin> map = getClassloaderToPluginMap();
-		StackTraceElement[] stacktrace = new Exception().getStackTrace();
-		for (int i = 0; i < stacktrace.length; i++) {
-			StackTraceElement element = stacktrace[i];
-			try {
-				ClassLoader loader = Class.forName(element.getClassName(), false, getClass().getClassLoader()).getClassLoader();
-				if (map.containsKey(loader)) {
-					return map.get(loader);
-				}
-			} catch (ClassNotFoundException e) {
-			}
-		}
-		return null;
-	}
+    private Plugin getRequestingPlugin() {
+        HashMap<ClassLoader, Plugin> map = getClassloaderToPluginMap();
+        StackTraceElement[] stacktrace = new Exception().getStackTrace();
+        for (int i = 0; i < stacktrace.length; i++) {
+            StackTraceElement element = stacktrace[i];
+            try {
+                ClassLoader loader = Class.forName(element.getClassName(), false, getClass().getClassLoader()).getClassLoader();
+                if (map.containsKey(loader)) {
+                    return map.get(loader);
+                }
+            }
+            catch (ClassNotFoundException e) {
+            }
+        }
+        return null;
+    }
 
-	private HashMap<ClassLoader, Plugin> getClassloaderToPluginMap() {
-		HashMap<ClassLoader, Plugin> map = new HashMap<ClassLoader, Plugin>();
-		for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-			map.put(plugin.getClass().getClassLoader(), plugin);
-		}
-		map.remove(getClass().getClassLoader());
-		return map;
-	}
+    private HashMap<ClassLoader, Plugin> getClassloaderToPluginMap() {
+        HashMap<ClassLoader, Plugin> map = new HashMap<ClassLoader, Plugin>();
+        for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
+            map.put(plugin.getClass().getClassLoader(), plugin);
+        }
+        map.remove(getClass().getClassLoader());
+        return map;
+    }
 
 }
