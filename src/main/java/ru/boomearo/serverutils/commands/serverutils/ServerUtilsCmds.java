@@ -14,7 +14,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 
 import ru.boomearo.serverutils.utils.other.commands.CmdInfo;
 import ru.boomearo.serverutils.utils.other.commands.Commands;
-import ru.boomearo.serverutils.utils.own.FileUtils;
 import ru.boomearo.serverutils.utils.own.GlobalConstants;
 import ru.boomearo.serverutils.utils.own.InternalUtils;
 import ru.boomearo.serverutils.utils.own.StringUtils;
@@ -135,7 +134,7 @@ public class ServerUtilsCmds implements Commands {
         // find plugin file
         File pmPluginFile = findPluginFile(pluginName);
         // ignore if we can't find plugin file
-        if (!pmPluginFile.exists()) {
+        if (pmPluginFile == null) {
             sender.sendMessage("File with this plugin name not found");
             return;
         }
@@ -178,14 +177,16 @@ public class ServerUtilsCmds implements Commands {
         return Bukkit.getPluginManager().getPlugin(pluginName);
     }
 
-    private File findPluginFile(String pluginName) {
-        for (File pluginFile : FileUtils.safeListFiles(GlobalConstants.getPluginsFolder())) {
-            String plugin = getPluginName(pluginFile);
-            if ((plugin != null) && (plugin.equalsIgnoreCase(plugin) || plugin.equalsIgnoreCase(plugin.replace(" ", "_")))) {
-                return pluginFile;
-            }
+    private File findPluginFile(String plugin) {
+        File pluginFile = new File(GlobalConstants.getPluginsFolder(), plugin + ".jar");
+        if (!pluginFile.exists()) {
+            return null;
         }
-        return new File(GlobalConstants.getPluginsFolder(), pluginName + ".jar");
+        String pluginName = getPluginName(pluginFile);
+        if (pluginName == null) {
+            return null;
+        }
+        return pluginFile;
     }
 
     private String getPluginName(File pluginFile) {
@@ -200,7 +201,6 @@ public class ServerUtilsCmds implements Commands {
                 }
             }
             catch (Exception ignored) {
-
             }
         }
         return null;
