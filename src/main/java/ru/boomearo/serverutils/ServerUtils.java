@@ -3,7 +3,7 @@ package ru.boomearo.serverutils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ru.boomearo.serverutils.commands.CmdExecutor;
-import ru.boomearo.serverutils.listeners.CommandBlockProtectListener;
+import ru.boomearo.serverutils.listeners.CommandsListener;
 import ru.boomearo.serverutils.utils.NetworkWatcher;
 
 public class ServerUtils extends JavaPlugin {
@@ -18,7 +18,7 @@ public class ServerUtils extends JavaPlugin {
 
         this.watcher.register();
 
-        getServer().getPluginManager().registerEvents(new CommandBlockProtectListener(), this);
+        getServer().getPluginManager().registerEvents(new CommandsListener(), this);
 
         getCommand("serverutils").setExecutor(new CmdExecutor());
 
