@@ -1,7 +1,6 @@
 package ru.boomearo.serverutils.commands.serverutils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -10,19 +9,21 @@ import java.util.jar.JarFile;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
+import ru.boomearo.serverutils.utils.other.commands.CmdInfo;
+import ru.boomearo.serverutils.utils.other.commands.Commands;
 import ru.boomearo.serverutils.utils.own.FileUtils;
 import ru.boomearo.serverutils.utils.own.GlobalConstants;
 import ru.boomearo.serverutils.utils.own.InternalUtils;
 import ru.boomearo.serverutils.utils.own.StringUtils;
 
-public class ServerUtilsCmds {
+public class ServerUtilsCmds implements Commands {
 
     private final InternalUtils iutils = new InternalUtils();
 
+    @CmdInfo(name = "pmanager", description = "Менеджер плагинов. Разгрузить/загрузить указанный плагин.", usage = "/su pmanager load/unload/reload/funload/freload <плагин>", permission = "serverutils.command.pmanager")
     public boolean pmanager(CommandSender cs, String[] args) {
         if (cs instanceof ConsoleCommandSender) {
             if (args.length != 2) {

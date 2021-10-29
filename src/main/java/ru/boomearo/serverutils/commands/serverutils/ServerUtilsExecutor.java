@@ -8,12 +8,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.Plugin;
 
 import ru.boomearo.serverutils.utils.other.commands.AbstractExecutor;
-import ru.boomearo.serverutils.utils.other.commands.CmdList;
 
-public class ServerUtilsExecutor extends AbstractExecutor {
+public class ServerUtilsExecutor extends AbstractExecutor implements TabCompleter {
 
     private static final List<String> empty = new ArrayList<>();
 
@@ -22,19 +22,29 @@ public class ServerUtilsExecutor extends AbstractExecutor {
     }
 
     @Override
-    public boolean zeroArgument(CommandSender sender, CmdList cmds) {
-        cmds.sendUsageCmds(sender);
+    protected boolean zeroArgument(CommandSender sender) {
+        sendUsageCommands(sender);
         return true;
     }
 
     @Override
-    public String getPrefix() {
+    protected String getPrefix() {
         return "§f";
     }
 
     @Override
-    public String getSuffix() {
+    protected String getSuffix() {
         return " §8-§a ";
+    }
+
+    @Override
+    protected boolean hasPermissionToExecute(CommandSender sender) {
+        return sender instanceof ConsoleCommandSender;
+    }
+
+    @Override
+    protected String getPermissionMessage() {
+        return null;
     }
 
     @Override
