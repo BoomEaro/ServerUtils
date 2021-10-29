@@ -65,10 +65,14 @@ public class ServerUtilsCmds implements Commands {
             sender.sendMessage("Plugin with this name not found");
             return;
         }
-        // check if plugin has other active depending plugins
-        if (!force) {
-            List<String> depending = getOtherDependingPlugins(pmPlugin);
-            if (!depending.isEmpty()) {
+        List<String> depending = getOtherDependingPlugins(pmPlugin);
+        if (!depending.isEmpty()) {
+            if (force) {
+                for (String plugin : depending) {
+                    unloadPlugin(sender, plugin, true);
+                }
+            }
+            else {
                 sender.sendMessage("Found other plugins that depend on this one, disable them first: " + StringUtils.join(depending.toArray(new String[depending.size()]), ", "));
                 return;
             }
@@ -93,14 +97,14 @@ public class ServerUtilsCmds implements Commands {
 
     private void unloadPlugin(CommandSender sender, String pluginName, boolean force) {
         // find plugin
-        Plugin pmplugin = findPlugin(pluginName);
+        Plugin pmPlugin = findPlugin(pluginName);
         // ignore if plugin is not loaded
-        if (pmplugin == null) {
+        if (pmPlugin == null) {
             sender.sendMessage("Plugin with this name not found");
             return;
         }
         // check if plugin has other active depending plugins
-        List<String> depending = getOtherDependingPlugins(pmplugin);
+        List<String> depending = getOtherDependingPlugins(pmPlugin);
         if (!depending.isEmpty()) {
             if (force) {
                 for (String plugin : depending) {
@@ -114,7 +118,7 @@ public class ServerUtilsCmds implements Commands {
         }
         // now unload plugin
         try {
-            this.iutils.unloadPlugin(pmplugin);
+            this.iutils.unloadPlugin(pmPlugin);
             sender.sendMessage("Plugin unloaded");
         }
         catch (Exception e) {
