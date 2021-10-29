@@ -24,31 +24,31 @@ public class ServerUtilsCmds implements Commands {
     private final InternalUtils iutils = new InternalUtils();
 
     @CmdInfo(name = "pmanager", description = "Менеджер плагинов. Разгрузить/загрузить указанный плагин.", usage = "/su pmanager load/unload/reload/funload/freload <плагин>", permission = "serverutils.command.pmanager")
-    public boolean pmanager(CommandSender cs, String[] args) {
-        if (cs instanceof ConsoleCommandSender) {
+    public boolean pmanager(CommandSender sender, String[] args) {
+        if (sender instanceof ConsoleCommandSender) {
             if (args.length != 2) {
                 return false;
             }
 
             if (args[1].equalsIgnoreCase("ServerUtils")) {
-                cs.sendMessage("What are you doing?!");
+                sender.sendMessage("What are you doing?!");
                 return true;
             }
 
             if (args[0].equalsIgnoreCase("load")) {
-                loadPlugin(cs, args[1]);
+                loadPlugin(sender, args[1]);
             }
             else if (args[0].equalsIgnoreCase("unload")) {
-                unloadPlugin(cs, args[1], false);
+                unloadPlugin(sender, args[1], false);
             }
             else if (args[0].equalsIgnoreCase("funload")) {
-                unloadPlugin(cs, args[1], true);
+                unloadPlugin(sender, args[1], true);
             }
             else if (args[0].equalsIgnoreCase("reload")) {
-                reloadPlugin(cs, args[1], false);
+                reloadPlugin(sender, args[1], false);
             }
             else if (args[0].equalsIgnoreCase("freload")) {
-                reloadPlugin(cs, args[1], true);
+                reloadPlugin(sender, args[1], true);
             }
             else {
                 return false;
@@ -57,33 +57,33 @@ public class ServerUtilsCmds implements Commands {
         return true;
     }
 
-    private void reloadPlugin(CommandSender sender, String pluginname, boolean force) {
+    private void reloadPlugin(CommandSender sender, String pluginName, boolean force) {
         // find plugin
-        Plugin pmplugin = findPlugin(pluginname);
+        Plugin pmPlugin = findPlugin(pluginName);
         // ignore if plugin is not loaded
-        if (pmplugin == null) {
+        if (pmPlugin == null) {
             sender.sendMessage("Plugin with this name not found");
             return;
         }
         // check if plugin has other active depending plugins
         if (!force) {
-            List<String> depending = getOtherDependingPlugins(pmplugin);
+            List<String> depending = getOtherDependingPlugins(pmPlugin);
             if (!depending.isEmpty()) {
                 sender.sendMessage("Found other plugins that depend on this one, disable them first: " + StringUtils.join(depending.toArray(new String[depending.size()]), ", "));
                 return;
             }
         }
         // find plugin file
-        File pmpluginfile = findPluginFile(pluginname);
+        File pmPluginFile = findPluginFile(pluginName);
         // ignore if we can't find plugin file
-        if (!pmpluginfile.exists()) {
+        if (!pmPluginFile.exists()) {
             sender.sendMessage("File with this plugin name not found");
             return;
         }
         // now reload plugin
         try {
-            this.iutils.unloadPlugin(pmplugin);
-            this.iutils.loadPlugin(pmpluginfile);
+            this.iutils.unloadPlugin(pmPlugin);
+            this.iutils.loadPlugin(pmPluginFile);
             sender.sendMessage("Plugin reloaded");
         }
         catch (Exception e) {
@@ -122,22 +122,22 @@ public class ServerUtilsCmds implements Commands {
         }
     }
 
-    private void loadPlugin(CommandSender sender, String pluginname) {
+    private void loadPlugin(CommandSender sender, String pluginName) {
         // ignore if plugin is already loaded
-        if (isPluginAlreadyLoaded(pluginname)) {
+        if (isPluginAlreadyLoaded(pluginName)) {
             sender.sendMessage("Plugin is already loaded");
             return;
         }
         // find plugin file
-        File pmpluginfile = findPluginFile(pluginname);
+        File pmPluginFile = findPluginFile(pluginName);
         // ignore if we can't find plugin file
-        if (!pmpluginfile.exists()) {
+        if (!pmPluginFile.exists()) {
             sender.sendMessage("File with this plugin name not found");
             return;
         }
         // now load plugin
         try {
-            this.iutils.loadPlugin(pmpluginfile);
+            this.iutils.loadPlugin(pmPluginFile);
             sender.sendMessage("Plugin loaded");
         }
         catch (Exception e) {
@@ -146,56 +146,56 @@ public class ServerUtilsCmds implements Commands {
     }
 
     private List<String> getOtherDependingPlugins(Plugin plugin) {
-        ArrayList<String> others = new ArrayList<String>();
-        for (Plugin otherplugin : Bukkit.getPluginManager().getPlugins()) {
-            PluginDescriptionFile descfile = otherplugin.getDescription();
+        ArrayList<String> others = new ArrayList<>();
+        for (Plugin otherPlugin : Bukkit.getPluginManager().getPlugins()) {
+            PluginDescriptionFile descFile = otherPlugin.getDescription();
             if (
-                    (descfile.getDepend() != null) && (descfile.getDepend().contains(plugin.getName())) ||
-                            (descfile.getSoftDepend() != null) && (descfile.getSoftDepend().contains(plugin.getName()))
+                    (descFile.getDepend() != null) && (descFile.getDepend().contains(plugin.getName())) ||
+                            (descFile.getSoftDepend() != null) && (descFile.getSoftDepend().contains(plugin.getName()))
             ) {
-                others.add(otherplugin.getName());
+                others.add(otherPlugin.getName());
             }
         }
         return others;
     }
 
-    private boolean isPluginAlreadyLoaded(String pluginname) {
+    private boolean isPluginAlreadyLoaded(String pluginName) {
         for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-            if (plugin.getName().equalsIgnoreCase(pluginname)) {
+            if (plugin.getName().equalsIgnoreCase(pluginName)) {
                 return true;
             }
         }
         return false;
     }
 
-    private Plugin findPlugin(String pluginname) {
+    private Plugin findPlugin(String pluginName) {
         for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-            if (plugin.getName().equalsIgnoreCase(pluginname)) {
+            if (plugin.getName().equalsIgnoreCase(pluginName)) {
                 return plugin;
             }
         }
-        return Bukkit.getPluginManager().getPlugin(pluginname);
+        return Bukkit.getPluginManager().getPlugin(pluginName);
     }
 
-    private File findPluginFile(String pluginname) {
-        for (File pluginfile : FileUtils.safeListFiles(GlobalConstants.getPluginsFolder())) {
-            String pluginName = getPluginName(pluginfile);
-            if ((pluginName != null) && (pluginname.equalsIgnoreCase(pluginName) || pluginname.equalsIgnoreCase(pluginName.replace(" ", "_")))) {
-                return pluginfile;
+    private File findPluginFile(String pluginName) {
+        for (File pluginFile : FileUtils.safeListFiles(GlobalConstants.getPluginsFolder())) {
+            String plugin = getPluginName(pluginFile);
+            if ((plugin != null) && (plugin.equalsIgnoreCase(plugin) || plugin.equalsIgnoreCase(plugin.replace(" ", "_")))) {
+                return pluginFile;
             }
         }
-        return new File(GlobalConstants.getPluginsFolder(), pluginname + ".jar");
+        return new File(GlobalConstants.getPluginsFolder(), pluginName + ".jar");
     }
 
-    private String getPluginName(File pluginfile) {
-        if (pluginfile.getName().endsWith(".jar")) {
-            try (final JarFile jarFile = new JarFile(pluginfile)) {
+    private String getPluginName(File pluginFile) {
+        if (pluginFile.getName().endsWith(".jar")) {
+            try (final JarFile jarFile = new JarFile(pluginFile)) {
                 JarEntry je = jarFile.getJarEntry("plugin.yml");
                 if (je != null) {
-                    PluginDescriptionFile plugininfo = new PluginDescriptionFile(jarFile.getInputStream(je));
-                    String jarpluginName = plugininfo.getName();
+                    PluginDescriptionFile pluginInfo = new PluginDescriptionFile(jarFile.getInputStream(je));
+                    String jarPluginName = pluginInfo.getName();
                     jarFile.close();
-                    return jarpluginName;
+                    return jarPluginName;
                 }
             }
             catch (Exception ignored) {
