@@ -153,10 +153,7 @@ public class ServerUtilsCmds implements Commands {
         ArrayList<String> others = new ArrayList<>();
         for (Plugin otherPlugin : Bukkit.getPluginManager().getPlugins()) {
             PluginDescriptionFile descFile = otherPlugin.getDescription();
-            if (
-                    (descFile.getDepend() != null) && (descFile.getDepend().contains(plugin.getName())) ||
-                            (descFile.getSoftDepend() != null) && (descFile.getSoftDepend().contains(plugin.getName()))
-            ) {
+            if ((descFile.getDepend() != null) && (descFile.getDepend().contains(plugin.getName())) || (descFile.getSoftDepend() != null) && (descFile.getSoftDepend().contains(plugin.getName()))) {
                 others.add(otherPlugin.getName());
             }
         }
