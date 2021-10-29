@@ -76,10 +76,7 @@ public abstract class AbstractExecutor implements CommandExecutor {
             }
         }
         if (!cmd.execute(sender, args)) {
-            String usage = cmd.getUsage();
-            if (usage != null && !usage.isEmpty()) {
-                sender.sendMessage(usage);
-            }
+            sender.sendMessage(getUsage(cmd));
         }
         return true;
     }
@@ -103,22 +100,23 @@ public abstract class AbstractExecutor implements CommandExecutor {
         return new TreeSet<>(this.commands.values());
     }
 
-    protected void sendUsageCommands(CommandSender cs) {
-        cs.sendMessage(getPrefix() + sep);
+    protected void sendUsageCommands(CommandSender sender) {
+        sender.sendMessage(getPrefix() + sep);
         for (Cmd cmd : getCmds()) {
-            if (cmd.getPermission().length() != 0) {
-                if (cs.hasPermission(cmd.getPermission())) {
-                    cs.sendMessage(getUsage(cmd));
+            String permission = cmd.getPermission();
+            if (permission != null && !permission.isEmpty()) {
+                if (sender.hasPermission(permission)) {
+                    sender.sendMessage(getUsage(cmd));
                 }
                 continue;
             }
-            cs.sendMessage(getUsage(cmd));
+            sender.sendMessage(getUsage(cmd));
         }
-        cs.sendMessage(getPrefix() + sep);
+        sender.sendMessage(getPrefix() + sep);
     }
 
-    private String getUsage(Cmd res) {
-        return getPrefix() + res.getUsage() + getSuffix() + res.getDescription();
+    private String getUsage(Cmd cmd) {
+        return getPrefix() + cmd.getUsage() + getSuffix() + cmd.getDescription();
     }
 
     protected String getPermissionMessage() {
