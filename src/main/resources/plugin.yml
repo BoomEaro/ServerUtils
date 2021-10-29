@@ -3,7 +3,7 @@ main: ru.boomearo.serverutils.ServerUtils
 version: 0.2.2
 author: BoomEaro
 description: ServerUtils
-api-version: 1.13
+api-version: 1.16
 commands:
   serverutils:
     usage: /serverutils
