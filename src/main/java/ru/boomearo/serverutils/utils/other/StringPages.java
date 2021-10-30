@@ -28,7 +28,6 @@ public class StringPages {
         final String sep = prefix + "§8==========================";
         sender.sendMessage(sep);
         sender.sendMessage(prefix + info.getCurrentPageInfo(page, maxPage));
-        sender.sendMessage(prefix + "Страница: §c" + page + "§f/§c" + maxPage);
         for (int i = 0; i < pageLimit; i++) {
             int newO = offSet + i;
             if (newO >= data.size()) {
@@ -46,11 +45,11 @@ public class StringPages {
         public String getPrefix();
 
         public default String getCurrentPageInfo(int currentPage, int maxPage) {
-            return "Страница: §c" + currentPage + "§f/§c" + maxPage;
+            return "Страница: §b" + currentPage + "§f/§b" + maxPage;
         }
 
         public default String getDataFormat(int index) {
-            return "§4" + index + ". §f";
+            return "§b" + index + ". §f";
         }
     }
 }
