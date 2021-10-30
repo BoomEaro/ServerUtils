@@ -8,7 +8,8 @@ import java.util.List;
 
 public class StringPages {
 
-    public static void sendPageInfoComponent(CommandSender sender, List<TextComponent> info, int page, int pageLimit, String prefix) {
+    public static void sendPageInfoComponent(CommandSender sender, List<TextComponent> data, int page, int pageLimit, PageInfo info) {
+        String prefix = info.getPrefix();
         if (prefix == null) {
             prefix = "";
         }
@@ -18,25 +19,38 @@ public class StringPages {
             return;
         }
         int offSet = (page - 1) * pageLimit;
-        if (offSet >= info.size()) {
+        if (offSet >= data.size()) {
             sender.sendMessage(prefix + "Указанная страница не найдена.");
             return;
         }
-        int maxPage = info.size() / pageLimit + (info.size() % pageLimit > 0 ? 1 : 0);
+        int maxPage = data.size() / pageLimit + (data.size() % pageLimit > 0 ? 1 : 0);
 
         final String sep = prefix + "§8==========================";
         sender.sendMessage(sep);
+        sender.sendMessage(prefix + info.getCurrentPageInfo(page, maxPage));
         sender.sendMessage(prefix + "Страница: §c" + page + "§f/§c" + maxPage);
         for (int i = 0; i < pageLimit; i++) {
             int newO = offSet + i;
-            if (newO >= info.size()) {
+            if (newO >= data.size()) {
                 break;
             }
-            TextComponent tt = new TextComponent(prefix + "§4" + (newO + 1) + ". §f");
-            tt.addExtra(info.get(newO));
+            TextComponent tt = new TextComponent(prefix + info.getDataFormat((newO + 1)));
+            tt.addExtra(data.get(newO));
             sender.spigot().sendMessage(tt);
         }
         sender.sendMessage(sep);
     }
 
+    public static interface PageInfo {
+
+        public String getPrefix();
+
+        public default String getCurrentPageInfo(int currentPage, int maxPage) {
+            return "Страница: §c" + currentPage + "§f/§c" + maxPage;
+        }
+
+        public default String getDataFormat(int index) {
+            return "§4" + index + ". §f";
+        }
+    }
 }
