@@ -77,9 +77,9 @@ public class ServerUtilsCmds implements Commands {
             }
         }
         // find plugin file
-        File pmPluginFile = findPluginFile(pluginName);
+        File pmPluginFile = findPluginFile(pmPlugin.getName());
         // ignore if we can't find plugin file
-        if (!pmPluginFile.exists()) {
+        if (pmPluginFile == null) {
             sender.sendMessage("File with this plugin name not found");
             return;
         }
