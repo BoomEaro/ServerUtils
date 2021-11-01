@@ -67,7 +67,7 @@ public class StringPages {
             if (newO >= data.size()) {
                 break;
             }
-            sender.sendMessage(prefix + info.getDataFormat((newO + 1)));
+            sender.sendMessage(prefix + info.getDataFormat((newO + 1)) + data.get(newO));
         }
         sender.sendMessage(sep);
     }
