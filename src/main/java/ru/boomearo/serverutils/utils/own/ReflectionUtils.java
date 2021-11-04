@@ -21,23 +21,22 @@ public class ReflectionUtils {
         throw new RuntimeException("Can't find field " + name);
     }
 
-    public static Method getMethod(Class<?> clazz, String name, int paramlength) {
+    public static Method getMethod(Class<?> clazz, String name, int paramLength) {
         do {
             for (Method method : clazz.getDeclaredMethods()) {
-                if (method.getName().equals(name) && (method.getParameterTypes().length == paramlength)) {
+                if (method.getName().equals(name) && (method.getParameterTypes().length == paramLength)) {
                     method.setAccessible(true);
                     return method;
                 }
             }
         } while ((clazz = clazz.getSuperclass()) != null);
-        throw new RuntimeException("Can't find method " + name + " with params length " + paramlength);
+        throw new RuntimeException("Can't find method " + name + " with params length " + paramLength);
     }
 
     public static void throwException(Throwable exception) {
-        ReflectionUtils.<RuntimeException>throwException0(exception);
+        ReflectionUtils.throwException0(exception);
     }
 
-    @SuppressWarnings("unchecked")
     private static <T extends Throwable> void throwException0(Throwable exception) throws T {
         throw (T) exception;
     }
