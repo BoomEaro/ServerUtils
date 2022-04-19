@@ -6,7 +6,7 @@
 
     <groupId>ru.boomearo</groupId>
     <artifactId>ServerUtils</artifactId>
-    <version>0.1</version>
+    <version>0.2.2</version>
     <packaging>jar</packaging>
 
     <name>ServerUtils</name>
@@ -19,15 +19,27 @@
 
     <build>
         <finalName>${project.name}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
+
+    <repositories>
+        <repository>
+            <id>codemc</id>
+            <url>https://repo.codemc.org/repository/nms/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>paper</groupId>
-            <artifactId>paper</artifactId>
-            <version>1</version>
-            <scope>system</scope>
-            <systemPath>C:/Users/mm123/workspace/paper-1.16.5.jar</systemPath>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

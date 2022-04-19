@@ -1,6 +1,6 @@
 name: ServerUtils
 main: ru.boomearo.serverutils.ServerUtils
-version: 0.2.2
+version: ${project.version}
 author: BoomEaro
 description: ServerUtils
 api-version: 1.16
