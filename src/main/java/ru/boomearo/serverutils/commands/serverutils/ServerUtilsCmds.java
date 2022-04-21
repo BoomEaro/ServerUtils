@@ -20,40 +20,48 @@ import ru.boomearo.serverutils.utils.own.StringUtils;
 
 public class ServerUtilsCmds implements Commands {
 
-    private final InternalUtils iutils = new InternalUtils();
+    private final InternalUtils internalUtils = new InternalUtils();
 
     @CmdInfo(name = "pmanager", description = "Менеджер плагинов. Разгрузить/загрузить указанный плагин.", usage = "/su pmanager load/unload/reload/funload/freload <плагин>", permission = "serverutils.command.pmanager")
     public boolean pmanager(CommandSender sender, String[] args) {
-        if (sender instanceof ConsoleCommandSender) {
-            if (args.length != 2) {
-                return false;
-            }
+        if (args.length != 2) {
+            return false;
+        }
 
-            if (args[1].equalsIgnoreCase("ServerUtils")) {
-                sender.sendMessage("What are you doing?!");
+        if (!(sender instanceof ConsoleCommandSender)) {
+            return true;
+        }
+
+        if (args[1].equalsIgnoreCase("ServerUtils")) {
+            sender.sendMessage("You can't load/unload ServerUtils!");
+            return true;
+        }
+
+        switch (args[0].toLowerCase()) {
+            case "load": {
+                loadPlugin(sender, args[1]);
                 return true;
             }
-
-            if (args[0].equalsIgnoreCase("load")) {
-                loadPlugin(sender, args[1]);
-            }
-            else if (args[0].equalsIgnoreCase("unload")) {
+            case "unload": {
                 unloadPlugin(sender, args[1], false);
+                return true;
             }
-            else if (args[0].equalsIgnoreCase("funload")) {
+            case "funload": {
                 unloadPlugin(sender, args[1], true);
+                return true;
             }
-            else if (args[0].equalsIgnoreCase("reload")) {
+            case "reload": {
                 reloadPlugin(sender, args[1], false);
+                return true;
             }
-            else if (args[0].equalsIgnoreCase("freload")) {
+            case "freload": {
                 reloadPlugin(sender, args[1], true);
+                return true;
             }
-            else {
+            default: {
                 return false;
             }
         }
-        return true;
     }
 
     private void reloadPlugin(CommandSender sender, String pluginName, boolean force) {
@@ -85,8 +93,8 @@ public class ServerUtilsCmds implements Commands {
         }
         // now reload plugin
         try {
-            this.iutils.unloadPlugin(pmPlugin);
-            this.iutils.loadPlugin(pmPluginFile);
+            this.internalUtils.unloadPlugin(pmPlugin);
+            this.internalUtils.loadPlugin(pmPluginFile);
             sender.sendMessage("Plugin reloaded");
         }
         catch (Exception e) {
@@ -117,7 +125,7 @@ public class ServerUtilsCmds implements Commands {
         }
         // now unload plugin
         try {
-            this.iutils.unloadPlugin(pmPlugin);
+            this.internalUtils.unloadPlugin(pmPlugin);
             sender.sendMessage("Plugin unloaded");
         }
         catch (Exception e) {
@@ -140,7 +148,7 @@ public class ServerUtilsCmds implements Commands {
         }
         // now load plugin
         try {
-            this.iutils.loadPlugin(pmPluginFile);
+            this.internalUtils.loadPlugin(pmPluginFile);
             sender.sendMessage("Plugin loaded");
         }
         catch (Exception e) {
