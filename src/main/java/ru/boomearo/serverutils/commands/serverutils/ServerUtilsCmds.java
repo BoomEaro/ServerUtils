@@ -12,9 +12,9 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
+import ru.boomearo.serverutils.ServerUtils;
 import ru.boomearo.serverutils.utils.other.commands.CmdInfo;
 import ru.boomearo.serverutils.utils.other.commands.Commands;
-import ru.boomearo.serverutils.utils.own.GlobalConstants;
 import ru.boomearo.serverutils.utils.own.InternalUtils;
 
 public class ServerUtilsCmds implements Commands {
@@ -185,7 +185,7 @@ public class ServerUtilsCmds implements Commands {
     }
 
     private File findPluginFile(String plugin) {
-        File pluginFile = new File(GlobalConstants.getPluginsFolder(), plugin + ".jar");
+        File pluginFile = new File(ServerUtils.getInstance().getDataFolder(), plugin + ".jar");
         if (!pluginFile.exists()) {
             return null;
         }

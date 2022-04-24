@@ -5,7 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.boomearo.serverutils.commands.serverutils.ServerUtilsExecutor;
 import ru.boomearo.serverutils.listeners.CommandsListener;
 import ru.boomearo.serverutils.utils.own.NetworkWatcher;
-import ru.boomearo.serverutils.utils.own.TpsRunnable;
+import ru.boomearo.serverutils.utils.other.TpsRunnable;
 
 public class ServerUtils extends JavaPlugin {
 

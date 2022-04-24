@@ -1,4 +1,4 @@
-package ru.boomearo.serverutils.utils.own;
+package ru.boomearo.serverutils.utils.other;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;

@@ -20,6 +20,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.UnknownDependencyException;
 
+/**
+ * Работает на чистой магии. Логика была взята из плагина AutoSaveWorld.
+ */
 public class InternalUtils {
 
     public void unloadPlugin(Plugin plugin) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, IOException, InterruptedException, NoSuchMethodException, InvocationTargetException {
