@@ -79,7 +79,7 @@ public class ServerUtilsCmds implements Commands {
                 }
             }
             else {
-                sender.sendMessage("Found other plugins that depend on this one, disable them first: " + String.join(",", depending.toArray(new String[0])));
+                sender.sendMessage("Found other plugins that depend on this one, disable them first: " + String.join(", ", depending.toArray(new String[0])));
                 return;
             }
         }
@@ -118,7 +118,7 @@ public class ServerUtilsCmds implements Commands {
                 }
             }
             else {
-                sender.sendMessage("Found other plugins that depend on this one, disable them first: " + String.join(",", depending.toArray(new String[0])));
+                sender.sendMessage("Found other plugins that depend on this one, disable them first: " + String.join(", ", depending.toArray(new String[0])));
                 return;
             }
         }
@@ -185,7 +185,7 @@ public class ServerUtilsCmds implements Commands {
     }
 
     private File findPluginFile(String plugin) {
-        File pluginFile = new File(ServerUtils.getInstance().getDataFolder(), plugin + ".jar");
+        File pluginFile = new File(ServerUtils.getInstance().getDataFolder().getParentFile(), plugin + ".jar");
         if (!pluginFile.exists()) {
             return null;
         }
