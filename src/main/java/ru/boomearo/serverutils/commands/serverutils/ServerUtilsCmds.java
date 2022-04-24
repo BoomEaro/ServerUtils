@@ -16,7 +16,6 @@ import ru.boomearo.serverutils.utils.other.commands.CmdInfo;
 import ru.boomearo.serverutils.utils.other.commands.Commands;
 import ru.boomearo.serverutils.utils.own.GlobalConstants;
 import ru.boomearo.serverutils.utils.own.InternalUtils;
-import ru.boomearo.serverutils.utils.own.StringUtils;
 
 public class ServerUtilsCmds implements Commands {
 
@@ -80,7 +79,7 @@ public class ServerUtilsCmds implements Commands {
                 }
             }
             else {
-                sender.sendMessage("Found other plugins that depend on this one, disable them first: " + StringUtils.join(depending.toArray(new String[depending.size()]), ", "));
+                sender.sendMessage("Found other plugins that depend on this one, disable them first: " + String.join(",", depending.toArray(new String[0])));
                 return;
             }
         }
@@ -119,7 +118,7 @@ public class ServerUtilsCmds implements Commands {
                 }
             }
             else {
-                sender.sendMessage("Found other plugins that depend on this one, disable them first: " + StringUtils.join(depending.toArray(new String[depending.size()]), ", "));
+                sender.sendMessage("Found other plugins that depend on this one, disable them first: " + String.join(",", depending.toArray(new String[0])));
                 return;
             }
         }

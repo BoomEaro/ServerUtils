@@ -50,42 +50,47 @@ public class ServerUtilsExecutor extends AbstractExecutor implements TabComplete
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof ConsoleCommandSender) {
-            if (args.length == 1) {
-                List<String> matches = new ArrayList<>();
-                String search = args[0].toLowerCase();
-                for (String se : Arrays.asList("pmanager")) {
-                    if (se.toLowerCase().startsWith(search)) {
-                        matches.add(se);
-                    }
-                }
-                return matches;
-            }
-            if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("pmanager")) {
+            switch (args.length) {
+                case 1: {
                     List<String> matches = new ArrayList<>();
-                    String search = args[1].toLowerCase();
-                    for (String se : Arrays.asList("load", "unload", "funload", "reload", "freload")) {
+                    String search = args[0].toLowerCase();
+                    for (String se : List.of("pmanager")) {
                         if (se.toLowerCase().startsWith(search)) {
                             matches.add(se);
                         }
                     }
                     return matches;
                 }
-            }
-            if (args.length == 3) {
-                if (args[0].equalsIgnoreCase("pmanager")) {
-                    if (args[1].equalsIgnoreCase("unload") || args[1].equalsIgnoreCase("funload") || args[1].equalsIgnoreCase("reload") || args[1].equalsIgnoreCase("freload")) {
+                case 2: {
+                    if (args[0].equalsIgnoreCase("pmanager")) {
                         List<String> matches = new ArrayList<>();
-                        String search = args[2].toLowerCase();
-                        for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-                            if (plugin.isEnabled()) {
-                                if (plugin.getName().toLowerCase().startsWith(search)) {
-                                    matches.add(plugin.getName());
-                                }
+                        String search = args[1].toLowerCase();
+                        for (String se : Arrays.asList("load", "unload", "funload", "reload", "freload")) {
+                            if (se.toLowerCase().startsWith(search)) {
+                                matches.add(se);
                             }
                         }
                         return matches;
                     }
+                    return empty;
+                }
+                case 3: {
+                    if (args[0].equalsIgnoreCase("pmanager")) {
+                        if (args[1].equalsIgnoreCase("unload") || args[1].equalsIgnoreCase("funload")
+                                || args[1].equalsIgnoreCase("reload") || args[1].equalsIgnoreCase("freload")) {
+                            List<String> matches = new ArrayList<>();
+                            String search = args[2].toLowerCase();
+                            for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
+                                if (plugin.isEnabled()) {
+                                    if (plugin.getName().toLowerCase().startsWith(search)) {
+                                        matches.add(plugin.getName());
+                                    }
+                                }
+                            }
+                            return matches;
+                        }
+                    }
+                    return empty;
                 }
             }
         }
